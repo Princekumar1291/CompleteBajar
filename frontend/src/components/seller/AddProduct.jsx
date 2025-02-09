@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-
-
+import { toast } from 'react-toastify';
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
-
+  const navigate = useNavigate();
+  const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     brand: "",
@@ -32,7 +33,7 @@ const AddProduct = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     const data = new FormData();
@@ -44,20 +45,27 @@ const AddProduct = () => {
     data.append("rating", formData.rating);
     data.append("productImage", formData.productImage);
 
-    fetch("http://localhost:4001/api/seller/products", {
-      method: "POST",
-      body: data,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        toast("Wow so easy!");
-        console.log("Success:", result);
+    try {
+      const response = await fetch("http://localhost:4002/api/seller/products", {
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      }).finally(()=>{
-        setLoading(false);
-      })
+      if (response.status === 201) {
+        toast("Product added successfully!", { autoClose: 1500 });
+        navigate("/");
+      }
+      else {
+        const data = await response.json();
+        toast.error(data.message, { autoClose: 1500 });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

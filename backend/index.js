@@ -7,12 +7,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors=require('cors');
 const authRouter = require('./routers/authRouter');
+const { isLoggedIn, isSeller } = require('./middleware/auth');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/api/seller', sellerRouter);
+app.use('/api/seller', isLoggedIn, isSeller, sellerRouter);
 app.use('/api/auth', authRouter);
 app.use((req, res, next) => {
   res.status(404).send({ success: false, message: 'Page not found' });

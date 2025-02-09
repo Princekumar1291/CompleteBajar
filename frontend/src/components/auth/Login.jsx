@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DisplayErrors from "./DisplayErrors";
+import { toast } from "react-toastify";
+import { login } from "../../store/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,26 +24,30 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:4001/api/auth/login", {
+      const response = await fetch("http://localhost:4002/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Login failed");
-
-      alert("Login successful!");
-      navigate("/dashboard");
+      
+      if(response.status !== 200) {
+        setError(data.errors);
+        return;
+      }
+      dispatch(login(data));
+      toast("Login successful!");
+      navigate("/");
     } catch (err) {
-      setError(err.message);
+      console.log(err);
     }
   };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
       <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      <DisplayErrors error={error} />
       <form onSubmit={handleSubmit}>
         <input
           type="email"

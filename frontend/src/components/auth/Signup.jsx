@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import DisplayErrors from "./DisplayErrors";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -42,20 +43,7 @@ const Signup = () => {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-      {
-        error.length > 0 && (
-          <div className="mb-4 rounded-lg bg-red-100 p-4">
-            <h3 className="text-red-700 text-lg font-bold mb-2">Error</h3>
-            <ul className="list-disc pl-8">
-              {
-                error.map((err) => (
-                  <li className="text-red-700 text-sm" key={err}>{err}</li>
-                ))
-              }
-            </ul>
-          </div>
-        )
-      }
+      <DisplayErrors error={error}></DisplayErrors>
       <h2 className="text-2xl font-bold mb-6 text-center">Signup</h2>
       <form onSubmit={handleSubmit}>
         <input
