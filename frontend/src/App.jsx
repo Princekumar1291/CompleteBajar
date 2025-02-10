@@ -15,7 +15,7 @@ const App = () => {
     <div className='dark:bg-gray-900 dark:text-white min-h-screen'>
       <BrowserRouter>
         <Navbar />
-        <div className='w-[95%] sm:w-[90%] md:w-[80%] mx-auto m-2'>
+        <div className='w-[95%] sm:w-[90%] md:w-[90%] lg:[80%] mx-auto m-2'>
         <ToastContainer />
           <Routes>
             <Route path="/" element={userType==="customer" || userType===null ? <CustomerHomes/>:<SellerHomes/>} />

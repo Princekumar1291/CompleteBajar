@@ -6,7 +6,6 @@ const multer=require("multer");
 
 sellerRouter.post('/products',sellerController.createProduct);
 sellerRouter.get('/products',sellerController.getProducts);
-
-
+sellerRouter.delete('/products/:id',sellerController.deleteProduct);
 
 module.exports=sellerRouter;

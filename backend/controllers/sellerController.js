@@ -1,5 +1,5 @@
 const Product = require("../models/Product");
-const { uploadProductPhotos } = require("../utils/cloudinaryUtils");
+const { uploadProductPhotos, deleteProductByUrl } = require("../utils/cloudinaryUtils");
 
 const createProduct = [
   uploadProductPhotos.single('productImage'),
@@ -33,7 +33,23 @@ const getProducts=async(req,res)=>{
   }
 }
 
+const deleteProduct = async (req, res) => {
+  try {
+    const id=req.params.id;
+    const product = await Product.findByIdAndDelete(id);
+    if(!product){
+      res.status(404).json({ message: "Product not found" });
+    }else{
+      res.status(200).json({ message: "Product deleted successfully" });
+      await deleteProductByUrl(product.imageUrl);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   createProduct,
-  getProducts
+  getProducts,
+  deleteProduct
 }

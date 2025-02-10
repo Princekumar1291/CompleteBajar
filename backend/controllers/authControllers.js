@@ -33,7 +33,6 @@ const signup = [
     let { name, email, password , userType } = req.body;
     try {
       password = await bcrypt.hash(password, 8);
-      console.log(password);
       const user = await User.create({ name, email, password, userType });
       await user.save();
       res.status(201).send({ success: true, user });
@@ -58,7 +57,7 @@ const login=async(req,res)=>{
     const token=jwt.sign(
       {userId:user._id,userType:user.userType},
       process.env.JWT_SECRET_KEY,
-      {expiresIn:"1h"}
+      {expiresIn:"1y"}
     );
     res.status(200).json({success:true,token,userType:user.userType});
   } catch (error) {

@@ -34,7 +34,7 @@ const Login = () => {
       
       if(response.status !== 200) {
         setError(data.errors);
-        return;
+        return ;
       }
       dispatch(login(data));
       toast("Login successful!");

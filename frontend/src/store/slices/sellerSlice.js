@@ -8,8 +8,8 @@ const initialState = {
 
 export const fetchSellerProducts = createAsyncThunk(
   "seller/fetchSellerProducts",
-  async () => {
-    const token = localStorage.getItem("token");
+  async (_, { getState }) => {
+    const token = getState().auth.token;
     const response = await fetch(
       "http://localhost:4002/api/seller/products",
       {
@@ -23,7 +23,7 @@ export const fetchSellerProducts = createAsyncThunk(
       return data;
     }
     else{
-      throw new Error("Something went wrong");
+      throw new Error("Something went wrong while fetching products");
     }
   }
 )
