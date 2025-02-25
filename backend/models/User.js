@@ -19,18 +19,18 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ['customer', 'seller'],
   },
-  cart: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
-    default: [],
-  },
+  cart: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+    }
+  ],
   orders: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Order",
-      default: [],
-    },
-  ],
+    }
+  ]
 });
 
 module.exports = mongoose.model("User", userSchema);

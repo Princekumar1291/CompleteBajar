@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const isLoggedIn = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log(authHeader);
+    // console.log(authHeader);
 
     if (!authHeader || !authHeader.startsWith("Bearer ") || authHeader === "Bearer null") {
       return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });

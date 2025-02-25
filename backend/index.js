@@ -33,6 +33,3 @@ mongoose.connect(MONGODB_URL)
 }).catch((error)=>{
   console.log("Error while connecting the DB");
 })
-
-
-
